@@ -1,0 +1,42 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# canadamaps
+
+## TODOs
+
+Run script 01 in data_processing, then
+
+- [ ] determine if the economic zones map can be obtained as "sums" of the census zones map
+- [ ] determine if the federal_electoral districts map can be obtained as "sums" of the census zones map
+
+## the idea
+
+the idea is to avoid "duplications", for example instead of adding a provinces map, we do:
+
+```{r}
+library(ggplot2)
+library(canadamaps)
+
+provinces <- get_provinces()
+
+ggplot(data = provinces) + geom_sf(aes(geometry = geometry))
+```
+
+let's see what creates the provinces map:
+
+```{r}
+ggplot(data = census_divisions) + geom_sf(aes(geometry = geometry))
+```

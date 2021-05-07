@@ -13,3 +13,4 @@ LICENSE.md
 .github
 ^codemeta\.json$
 ^LICENSE\.md$
+^README\.Rmd$
