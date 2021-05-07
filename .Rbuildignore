@@ -1,0 +1,15 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+.Renviron
+data_shp
+data_geojson
+data_topojson
+data_processing
+dev
+docs
+README.Rmd
+README.md
+LICENSE.md
+.github
+^codemeta\.json$
+^LICENSE\.md$
