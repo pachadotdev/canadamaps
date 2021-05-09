@@ -2,20 +2,25 @@
 % Please edit documentation in R/get_provinces.R
 \name{get_provinces}
 \alias{get_provinces}
-\title{Mapa de Canada a nivel provincial - WRITE IN ENGLISH !!!!}
+\title{Canadian Map at Province (ER) Level}
 \usage{
 get_provinces(map = canadamaps::census_divisions)
 }
 \arguments{
-\item{mapa}{mapa a agregar, por defecto es todo el mapa nacional}
+\item{map}{which map to add, by default it takes the complete Census
+Divisions (CD) map}
 }
 \value{
-Un objeto de clase sf y data.frame.
+a tibble with provinces and geometry (multipolygon) fields.
 }
 \description{
-Este mapa es calculado a partir
-del mapa censal para no recargar el volumen de datos del paquete.
+This function aggregates the Census Divisions (CD) map
+to provide the Province map. The idea is to avoid providing
+a dataset with map that can be obtained as an aggregation of another.
 }
 \examples{
+\dontrun{
 get_provinces()
+get_provinces(census_divisions \%>\% filter(prname == "Ontario"))
+}
 }

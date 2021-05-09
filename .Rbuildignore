@@ -2,8 +2,6 @@
 ^\.Rproj\.user$
 .Renviron
 data_shp
-data_geojson
-data_topojson
 data_processing
 dev
 docs
@@ -14,3 +12,6 @@ LICENSE.md
 ^codemeta\.json$
 ^LICENSE\.md$
 ^README\.Rmd$
+^README\.md$
+man/figures
+CODE_OF_CONDUCT.md

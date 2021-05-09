@@ -1,14 +1,19 @@
-#' Mapa de Canada a nivel provincial - WRITE IN ENGLISH !!!!
-#' @description Este mapa es calculado a partir
-#' del mapa censal para no recargar el volumen de datos del paquete.
-#' @param mapa mapa a agregar, por defecto es todo el mapa nacional
-#' @importFrom rmapshaper ms_dissolve
+#' Canadian Map at Province (ER) Level
+#' @description This function aggregates the Census Divisions (CD) map
+#' to provide the Province map. The idea is to avoid providing
+#' a dataset with map that can be obtained as an aggregation of another.
+#' @param map which map to add, by default it takes the complete Census
+#' Divisions (CD) map
+#' @importFrom rmapshaper ms_dissolve ms_simplify
 #' @importFrom sf st_as_sf
-#' @importFrom dplyr as_tibble distinct
+#' @importFrom dplyr as_tibble filter select left_join
 #' @importFrom magrittr %>%
-#' @return Un objeto de clase sf y data.frame.
+#' @return a tibble with provinces and geometry (multipolygon) fields.
 #' @examples
+#' \dontrun{
 #' get_provinces()
+#' get_provinces(census_divisions %>% filter(prname == "Ontario"))
+#' }
 #' @export
 get_provinces <- function(map = canadamaps::census_divisions) {
   cduid_pruid <- map %>%

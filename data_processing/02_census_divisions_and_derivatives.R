@@ -15,18 +15,14 @@ if (!file.exists(census_divisions_rda)) {
   load(census_divisions_rda)
 }
 
-# geographic attributes ----
-
-geographic_attributes_rda <- "data/geographic_attributes.rda"
-
-geographic_attributes <- read_csv("data_shp/geographic_attributes/2016_92-151_XBB.csv",
-                                  locale = locale(encoding = "ISO-8859-1"))
-
-# economic zone ----
+# economic region ----
 
 cduid_eruid_rda <- "data/cduid_eruid.rda"
 
 if (!file.exists(economic_regions_rda)) {
+  geographic_attributes <- read_csv("data_shp/geographic_attributes/2016_92-151_XBB.csv",
+                                    locale = locale(encoding = "ISO-8859-1"))
+
   cduid_eruid <- geographic_attributes %>%
     select(cduid = `CDuid/DRidu`, eruid = `ERuid/REidu`, ername = `ERname/REnom`) %>%
     distinct() %>%
@@ -36,12 +32,6 @@ if (!file.exists(economic_regions_rda)) {
 
   cduid_eruid <- cduid_eruid %>%
     mutate(ername = iconv(ername, from = "", to = "UTF-8"))
-
-  # economic_regions <- census_divisions %>%
-  #   filter(cduid != 3524) %>% # Halton belongs to two economic zones !
-  #   left_join(cduid_eruid)
-  #
-  # economic_regions <- aggregate_census_divisions(economic_regions, "eruid")
 
   use_data(cduid_eruid, compress = "xz", overwrite = T)
 } else {
