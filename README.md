@@ -7,10 +7,14 @@
 
 Run script 01 in data\_processing, then
 
--   [ ] determine if the economic zones map can be obtained as “sums” of
+-   [x] determine if the economic zones map can be obtained as “sums” of
     the census zones map
--   [ ] determine if the federal\_electoral districts map can be
+-   [x] determine if the federal\_electoral districts map can be
     obtained as “sums” of the census zones map
+
+economic zones ok
+
+federal districts is a separate map
 
 ## the idea
 
