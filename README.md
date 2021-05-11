@@ -11,10 +11,8 @@ Run script 01 in data\_processing, then
     the census zones map
 -   [x] determine if the federal\_electoral districts map can be
     obtained as “sums” of the census zones map
-
-economic zones ok
-
-federal districts is a separate map
+-   [x] economic zones and federal electoral maps district now ok
+-   [ ] complete https://docs.google.com/spreadsheets/d/15QtYqXioWI57OHafVwLg0TBV6pTxG5Wtfk7TYirLS5Q/edit#gid=1595857115 to be able to merge the CD into CAR
 
 ## the idea
 
