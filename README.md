@@ -14,6 +14,19 @@ Run script 01 in data\_processing, then
 -   [x] economic zones and federal electoral maps district now ok
 -   [ ] complete https://docs.google.com/spreadsheets/d/15QtYqXioWI57OHafVwLg0TBV6pTxG5Wtfk7TYirLS5Q/edit#gid=1595857115 to be able to merge the CD into CAR
 
+## maps of interest (at the moment)
+
+see https://github.com/pachamaltese/canadamaps/blob/main/f1_1-eng.jpg, which gives the idea of which maps are aggregations of others and which not
+
+in the diagram, these are of interest
+
+-   [x] CD Census Division 293
+-   [x] ER Economic Region 76
+-   [ ] CAR Census Agricultural Region 72 - WIP, needs the 4th point of TODOs
+-   [x] FED Fed Electoral District 338
+-   [x] Province or Territory 13
+-   [x] Geographical Region of Canada 6
+
 ## the idea
 
 the idea is to avoid “duplications”, for example instead of adding a
