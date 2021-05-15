@@ -4,7 +4,7 @@
 \alias{get_provinces}
 \title{Canadian Map at Province (ER) Level}
 \usage{
-get_provinces(map = canadamaps::census_divisions)
+get_provinces(map = census_divisions)
 }
 \arguments{
 \item{map}{which map to add, by default it takes the complete Census

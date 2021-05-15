@@ -8,6 +8,7 @@
 #' @importFrom sf st_as_sf
 #' @importFrom dplyr as_tibble filter select left_join
 #' @importFrom magrittr %>%
+#' @importFrom rlang syms
 #' @return a tibble with provinces and geometry (multipolygon) fields.
 #' @examples
 #' \dontrun{
@@ -15,15 +16,16 @@
 #' get_provinces(census_divisions %>% filter(prname == "Ontario"))
 #' }
 #' @export
-get_provinces <- function(map = canadamaps::census_divisions) {
+get_provinces <- function(map = census_divisions) {
   cduid_pruid <- map %>%
     as_tibble() %>%
-    select(pruid, prname) %>%
+    select(!!!syms(c("pruid", "prname"))) %>%
     distinct()
 
   map <- ms_dissolve(st_as_sf(map), field = "pruid") %>%
     as_tibble() %>%
-    left_join(cduid_pruid, by = "pruid")
+    left_join(cduid_pruid, by = "pruid") %>%
+    select(!!!syms(c("pruid", "prname", "geometry")))
 
-  map[, c("pruid", "prname", "geometry")]
+  return(map)
 }

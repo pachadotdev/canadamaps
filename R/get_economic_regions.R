@@ -8,6 +8,7 @@
 #' @importFrom sf st_as_sf
 #' @importFrom dplyr as_tibble filter select left_join bind_rows distinct
 #' @importFrom magrittr %>%
+#' @importFrom rlang sym syms
 #' @return a tibble with economic regions, provinces and geometry
 #' (multipolygon) fields.
 #' @examples
@@ -18,22 +19,24 @@
 #' @export
 get_economic_regions <- function(map = census_divisions) {
   map <- map %>%
-    filter(cduid != 3524) %>%
-    left_join(canadamaps::cduid_eruid, by = "cduid")
+    filter(!!sym("cduid") != 3524) %>%
+    left_join(cduid_eruid, by = "cduid")
 
   map <- map %>%
     bind_rows(
-      halton_special_case %>% select(-cduid, -cdname, -cdtype)
+      halton_special_case %>%
+        select(!!!syms(c("pruid", "prname", "eruid", "ername", "geometry")))
     )
 
   eruid_pruid <- map %>%
     as_tibble() %>%
-    select(eruid, ername, pruid, prname) %>%
+    select(!!!syms(c("eruid", "ername", "pruid", "prname"))) %>%
     distinct()
 
   map <- ms_dissolve(st_as_sf(map), field = "eruid") %>%
     as_tibble() %>%
-    left_join(eruid_pruid, by = "eruid")
+    left_join(eruid_pruid, by = "eruid") %>%
+    select(!!!syms(c("eruid", "ername", "pruid", "prname", "geometry")))
 
-  map[, c("eruid", "ername", "pruid", "prname", "geometry")]
+  return(map)
 }
