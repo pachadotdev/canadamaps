@@ -19,7 +19,7 @@ if (!file.exists(census_divisions_rda)) {
 
 cduid_eruid_rda <- "data/cduid_eruid.rda"
 
-if (!file.exists(economic_regions_rda)) {
+if (!file.exists(cduid_eruid_rda)) {
   geographic_attributes <- read_csv("data_shp/geographic_attributes/2016_92-151_XBB.csv",
                                     locale = locale(encoding = "ISO-8859-1"))
 
@@ -38,7 +38,7 @@ if (!file.exists(economic_regions_rda)) {
   load(cduid_eruid_rda)
 }
 
-halton_special_case_rda <- "halton_special_case.rda"
+halton_special_case_rda <- "data/halton_special_case.rda"
 
 if (!file.exists(halton_special_case_rda)) {
   economic_regions_2 <- tidy_sf("data_shp/economic_regions/ler_000b16a_e.shp")
@@ -74,5 +74,5 @@ if (!file.exists(halton_special_case_rda)) {
 
   use_data(halton_special_case, compress = "xz", overwrite = T)
 } else {
-  load(halton_special_case)
+  load(halton_special_case_rda)
 }
