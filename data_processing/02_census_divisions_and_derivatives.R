@@ -10,6 +10,9 @@ if (!file.exists(census_divisions_rda)) {
 
   census_divisions <- as_tibble(census_divisions)
 
+  census_divisions <- census_divisions %>%
+    mutate(cdname = gsub("--", " - ", cdname))
+
   use_data(census_divisions, compress = "xz", overwrite = T)
 } else {
   load(census_divisions_rda)
@@ -32,6 +35,9 @@ if (!file.exists(cduid_eruid_rda)) {
 
   cduid_eruid <- cduid_eruid %>%
     mutate(ername = iconv(ername, from = "", to = "UTF-8"))
+
+  cduid_eruid <- cduid_eruid %>%
+    mutate(ername = gsub("--", " - ", ername))
 
   use_data(cduid_eruid, compress = "xz", overwrite = T)
 } else {

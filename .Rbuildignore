@@ -2,12 +2,13 @@
 ^\.Rproj\.user$
 .Renviron
 data_shp
+data_xlsx
 data_processing
 dev
 docs
 README.Rmd
 README.md
-LICENSE.md
+LICENSE
 .github
 ^codemeta\.json$
 ^LICENSE\.md$
@@ -15,3 +16,7 @@ LICENSE.md
 ^README\.md$
 man/figures
 CODE_OF_CONDUCT.md
+census-aggregation-diagram.svg
+data/agricultural_divisions.rda
+data/cduid_eruid.rda
+data/halton_special_case.rda

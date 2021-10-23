@@ -14,17 +14,19 @@
 #' @examples
 #' \dontrun{
 #' get_economic_regions()
+#'
+#' # requires dplyr
 #' get_economic_regions(census_divisions %>% filter(prname == "Ontario"))
 #' }
 #' @export
 get_economic_regions <- function(map = census_divisions) {
   map <- map %>%
     filter(!!sym("cduid") != 3524) %>%
-    left_join(cduid_eruid, by = "cduid")
+    left_join(matches_for_aggregation$cduid_eruid, by = "cduid")
 
   map <- map %>%
     bind_rows(
-      halton_special_case %>%
+      matches_for_aggregation$halton_special_case %>%
         select(!!!syms(c("pruid", "prname", "eruid", "ername", "geometry")))
     )
 

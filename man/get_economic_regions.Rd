@@ -22,6 +22,8 @@ a dataset with map that can be obtained as an aggregation of another.
 \examples{
 \dontrun{
 get_economic_regions()
+
+# requires dplyr
 get_economic_regions(census_divisions \%>\% filter(prname == "Ontario"))
 }
 }

@@ -21,6 +21,8 @@ a dataset with map that can be obtained as an aggregation of another.
 \examples{
 \dontrun{
 get_provinces()
+
+# requires dplyr
 get_provinces(census_divisions \%>\% filter(prname == "Ontario"))
 }
 }

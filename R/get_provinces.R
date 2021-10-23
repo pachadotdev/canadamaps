@@ -13,6 +13,8 @@
 #' @examples
 #' \dontrun{
 #' get_provinces()
+#'
+#' # requires dplyr
 #' get_provinces(census_divisions %>% filter(prname == "Ontario"))
 #' }
 #' @export

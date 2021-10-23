@@ -3,55 +3,98 @@
 
 # canadamaps
 
-## TODOs
+## General idea
 
-Run script 01 in data\_processing, then
-
--   [x] determine if the economic zones map can be obtained as “sums” of
-    the census zones map
--   [x] determine if the federal\_electoral districts map can be
-    obtained as “sums” of the census zones map
--   [x] economic zones and federal electoral maps district now ok
--   [ ] complete https://docs.google.com/spreadsheets/d/15QtYqXioWI57OHafVwLg0TBV6pTxG5Wtfk7TYirLS5Q/edit#gid=1595857115 to be able to merge the CD into CAR
-
-## maps of interest (at the moment)
-
-see https://github.com/pachamaltese/canadamaps/blob/main/f1_1-eng.jpg, which gives the idea of which maps are aggregations of others and which not
-
-in the diagram, these are of interest
-
--   [x] CD Census Division 293
--   [x] ER Economic Region 76
--   [ ] CAR Census Agricultural Region 72 - WIP, needs the 4th point of TODOs
--   [x] FED Fed Electoral District 338
--   [x] Province or Territory 13
--   [x] Geographical Region of Canada 6
-
-## the idea
-
-the idea is to avoid “duplications”, for example instead of adding a
-provinces map, we do:
+The idea is to avoid “duplications”, for example instead of adding a
+provinces map or others, we provide functions to sum Census Divisions in
+all possible cases.
 
 ``` r
 library(ggplot2)
 library(canadamaps)
-#> Loading required package: sf
-#> Linking to GEOS 3.8.0, GDAL 3.0.4, PROJ 6.3.1
-#> Registered S3 method overwritten by 'geojsonlint':
-#>   method         from 
-#>   print.location dplyr
 
-provinces <- get_provinces()
-
-ggplot(data = provinces) + geom_sf(aes(geometry = geometry))
+ggplot(data = census_divisions) + 
+  geom_sf(aes(geometry = geometry)) +
+  labs(title = "Canada's Census Divisions")
 ```
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
 
-let’s see what creates the provinces map:
-
 ``` r
-ggplot(data = census_divisions) + geom_sf(aes(geometry = geometry))
+ggplot(data = get_agricultural_divisions()) + 
+  geom_sf(aes(geometry = geometry)) +
+  labs(title = "Canada's Census Agricultural Regions")
 ```
 
-<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-2-2.png" width="100%" />
+
+``` r
+ggplot(data = get_economic_regions()) + 
+  geom_sf(aes(geometry = geometry)) +
+  labs(title = "Canada's Economic Regions")
+```
+
+<img src="man/figures/README-unnamed-chunk-2-3.png" width="100%" />
+
+``` r
+ggplot(data = federal_electoral_districts) + 
+  geom_sf(aes(geometry = geometry)) +
+  labs(title = "Canada's Federal Electoral Districts")
+```
+
+<img src="man/figures/README-unnamed-chunk-2-4.png" width="100%" />
+
+``` r
+ggplot(data = get_provinces()) + 
+  geom_sf(aes(geometry = geometry)) +
+  labs(title = "Canada's Provinces")
+```
+
+<img src="man/figures/README-unnamed-chunk-2-5.png" width="100%" />
+
+## Units of aggregation
+
+### Census Division
+
+The finest division in this package is the Census Division (CDs) which
+can be of the next types (reference:
+<https://www.statcan.gc.ca/en/subjects/standard/sgc/2011/sgc-tab-d>).
+
+| Language form of CD type | Abbreviation for English language publications | Title for English language publications | Abbreviation for French language publications | Title for French language publications | Abbreviation for bilingual publications | Title for bilingual publications          |
+|--------------------------|------------------------------------------------|-----------------------------------------|-----------------------------------------------|----------------------------------------|-----------------------------------------|-------------------------------------------|
+| Bilingual                | CDR                                            | Census division                         | CDR                                           | Division de recensement                | CDR                                     | Census division / Division de recensement |
+| Bilingual                | CT                                             | County                                  | CT                                            | Comté                                  | CT                                      | County / Comté                            |
+| English only             | CTY                                            | County                                  | CTY                                           | County                                 | CTY                                     | County                                    |
+| English only             | DIS                                            | District                                | DIS                                           | District                               | DIS                                     | District                                  |
+| English only             | DM                                             | District municipality                   | DM                                            | District municipality                  | DM                                      | District municipality                     |
+| French only              | MRC                                            | Municipalité régionale de comté         | MRC                                           | Municipalité régionale de comté        | MRC                                     | Municipalité régionale de comté           |
+| English only             | RD                                             | Regional district                       | RD                                            | Regional district                      | RD                                      | Regional district                         |
+| English only             | REG                                            | Region                                  | REG                                           | Region                                 | REG                                     | Region                                    |
+| English only             | RM                                             | Regional municipality                   | RM                                            | Regional municipality                  | RM                                      | Regional municipality                     |
+| French only              | TÉ                                             | Territoire équivalent                   | TÉ                                            | Territoire équivalent                  | TÉ                                      | Territoire équivalent                     |
+| Bilingual                | TER                                            | Territory                               | TER                                           | Territoire                             | TER                                     | Territory / Territoire                    |
+| English only             | UC                                             | United counties                         | UC                                            | United counties                        | UC                                      | United counties                           |
+
+The division type is specified in the `census_divisions` table.
+
+### Census Agricultural Regions
+
+Census Agricultural Regions (CARs) can be obtained as sums of CDs.
+Excluding some special cases for Northwestern Territories, Nunavur and
+Yukon that we clarified over email communication, the source to match
+CDs to CARs was obtained from [Census of Agriculture Reference
+Maps](https://www150.statcan.gc.ca/n1/pub/95-630-x/95-630-x2017000-eng.htm)
+and manually organized in a spreadsheet
+(<https://github.com/pachadotdev/canadamaps/tree/main/data_xlsx>).
+
+### Economic Regions
+
+Economic Regions (ERs) can be obtained as sums of CDs. The only special
+case is the Halton, which belongs to two economic zones and it’s the
+only CD that has to be carefully separated (i.e. see
+<https://github.com/pachadotdev/canadamaps/blob/main/data_processing/02_census_divisions_and_derivatives.R>).
+
+### Federal Electoral Districts
+
+These cannot be obtained as sums of CDs, therefore these are stored in
+their own table `federal_electoral_districts`.
