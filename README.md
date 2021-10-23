@@ -1,5 +1,9 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+<!-- badges: start -->
+
+[![R-CMD-check](https://github.com/pachadotdev/canadamaps/workflows/R-CMD-check/badge.svg)](https://github.com/pachadotdev/canadamaps/actions)
+<!-- badges: end -->
 
 # canadamaps
 
