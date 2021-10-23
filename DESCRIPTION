@@ -3,10 +3,6 @@ Type: Package
 Title: Maps of the Political and Administrative Divisions of Canada
 Version: 0.1
 Authors@R: c(
-    person("Lorena", "Almaraz de la Garza", role = c("aut"),
-      email = "foobar@canada.ca"),
-    person("Rohan", "Alexander", role = c("aut"),
-      email = "foobar@canada.ca"),
     person("Mauricio", "Vargas Sepulveda", role = c("aut", "cre"),
       email = "mavargas11@uc.cl"),
     person(family = "Statistics Canada",
@@ -14,7 +10,9 @@ Authors@R: c(
     )
 URL: https://pachamaltese.github.io/canadamaps/
 BugReports: https://github.com/pachamaltese/canadamaps/issues
-Description: Terrestrial maps with simplified topologies. COMPLETE THIS.
+Description: Terrestrial maps with simplified topologies for Census Divisions,
+    Agricultural Regions, Economic Regions, Federal Electoral Divisions and
+    Provinces.
 License: Apache License (>= 2)
 Encoding: UTF-8
 LazyData: true
