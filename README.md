@@ -56,6 +56,45 @@ ggplot(data = get_provinces()) +
 
 <img src="man/figures/README-unnamed-chunk-2-5.png" width="100%" />
 
+## Using real data
+
+Example (after loading the packages above): Let’s say I want to
+replicate the map from
+<https://health-infobase.canada.ca/covid-19/vaccination-coverage/>,
+which was checked on 2021-10-23 and was updated up to 2021-10-16.
+
+``` r
+library(readr)
+library(dplyr)
+
+url <- "https://health-infobase.canada.ca/src/data/covidLive/vaccination-coverage-map.csv"
+csv <- paste0("data_processing/", gsub(".*/", "", url))
+if (!file.exists(csv)) download.file(url, csv)
+
+colours <- c("#efefa2", "#c2e699", "#78c679", "#31a354", "#006837")
+
+vaccination <- read_csv(csv) %>% 
+  filter(week_end == as.Date("2021-10-16"), pruid != 1) %>% 
+  select(pruid, proptotal_atleast1dose)
+
+vaccination <- vaccination %>% 
+  left_join(get_provinces(), by = "pruid") %>% # canadamaps in action
+  mutate(
+    label = paste(gsub(" /.*", "", prname),
+                  paste0(proptotal_atleast1dose, "%"), sep = "\n"),
+  )
+
+vaccination %>% 
+  ggplot() +
+  geom_sf(aes(fill = proptotal_atleast1dose, geometry = geometry)) +
+  geom_sf_label(aes(label = label, geometry = geometry)) +
+  scale_fill_gradientn(colours = colours, name = "Cumulative percent") +
+  labs(title = "Cumulative percent of thepopulation who have received atleast 1 dose of a COVID-19 vaccine") +
+  theme_minimal(base_size = 13)
+```
+
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+
 ## Units of aggregation
 
 ### Census Division
