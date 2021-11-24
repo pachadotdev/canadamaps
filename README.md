@@ -89,7 +89,7 @@ vaccination %>%
   geom_sf(aes(fill = proptotal_atleast1dose, geometry = geometry)) +
   geom_sf_label(aes(label = label, geometry = geometry)) +
   scale_fill_gradientn(colours = colours, name = "Cumulative percent") +
-  labs(title = "Cumulative percent of thepopulation who have received atleast 1 dose of a COVID-19 vaccine") +
+  labs(title = "Cumulative percent of thepopulation who have received at least 1 dose of a COVID-19 vaccine") +
   theme_minimal(base_size = 13)
 ```
 
