@@ -21,10 +21,7 @@ providing a dataset with map that can be obtained as an aggregation of
 another.
 }
 \examples{
-\dontrun{
-get_agricultural_divisions()
-
-# requires dplyr
-get_agricultural_divisions(census_divisions \%>\% filter(prname == "Ontario"))
-}
+get_agricultural_divisions(
+ census_divisions[census_divisions$prname == "Ontario",]
+)
 }

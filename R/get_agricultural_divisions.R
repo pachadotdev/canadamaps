@@ -5,21 +5,17 @@
 #' another.
 #' @param map which map to add, by default it takes the complete Census
 #' Divisions (CD) map
-#' @importFrom rmapshaper ms_dissolve ms_simplify
+#' @importFrom rmapshaper ms_dissolve
 #' @importFrom sf st_as_sf
-#' @importFrom dplyr as_tibble select left_join distinct mutate
+#' @importFrom dplyr as_tibble select left_join distinct mutate case_when
 #'  case_when
-#' @importFrom magrittr %>%
 #' @importFrom rlang sym syms
 #' @return a tibble with economic regions, provinces and geometry
 #' (multipolygon) fields.
 #' @examples
-#' \dontrun{
-#' get_agricultural_divisions()
-#'
-#' # requires dplyr
-#' get_agricultural_divisions(census_divisions %>% filter(prname == "Ontario"))
-#' }
+#' get_agricultural_divisions(
+#'  census_divisions[census_divisions$prname == "Ontario",]
+#' )
 #' @export
 get_agricultural_divisions <- function(map = census_divisions) {
   map <- map %>%

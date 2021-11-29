@@ -21,3 +21,4 @@ data/agricultural_divisions.rda
 data/cduid_eruid.rda
 data/halton_special_case.rda
 ^\.github$
+^CRAN-RELEASE$

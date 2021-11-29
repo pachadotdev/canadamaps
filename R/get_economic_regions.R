@@ -4,20 +4,16 @@
 #' a dataset with map that can be obtained as an aggregation of another.
 #' @param map which map to add, by default it takes the complete Census
 #' Divisions (CD) map
-#' @importFrom rmapshaper ms_dissolve ms_simplify
+#' @importFrom rmapshaper ms_dissolve
 #' @importFrom sf st_as_sf
 #' @importFrom dplyr as_tibble filter select left_join bind_rows distinct
-#' @importFrom magrittr %>%
 #' @importFrom rlang sym syms
 #' @return a tibble with economic regions, provinces and geometry
 #' (multipolygon) fields.
 #' @examples
-#' \dontrun{
-#' get_economic_regions()
-#'
-#' # requires dplyr
-#' get_economic_regions(census_divisions %>% filter(prname == "Ontario"))
-#' }
+#' get_economic_regions(
+#'  census_divisions[census_divisions$prname == "Ontario",]
+#' )
 #' @export
 get_economic_regions <- function(map = census_divisions) {
   map <- map %>%

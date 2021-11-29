@@ -4,24 +4,23 @@ Title: Maps of the Political and Administrative Divisions of Canada
 Version: 0.1
 Authors@R: c(
     person("Mauricio", "Vargas Sepulveda", role = c("aut", "cre"),
-      email = "mavargas11@uc.cl"),
+      email = "mv.sepulveda@mail.utoronto.ca"),
     person(family = "Statistics Canada",
       role = "dtc")
     )
-URL: https://pachamaltese.github.io/canadamaps/
-BugReports: https://github.com/pachamaltese/canadamaps/issues
+URL: https://github.com/pachadotdev/canadamaps/
+BugReports: https://github.com/pachadotdev/canadamaps/issues
 Description: Terrestrial maps with simplified topologies for Census Divisions,
     Agricultural Regions, Economic Regions, Federal Electoral Divisions and
     Provinces.
 License: Apache License (>= 2)
 Encoding: UTF-8
 LazyData: true
-VignetteBuilder: knitr
-RoxygenNote: 7.1.2
 Depends: R(>= 3.5.0), sf
-Imports: rmapshaper, dplyr, magrittr, stringr, rlang
+Imports: rmapshaper, dplyr, magrittr, rlang
 Suggests: 
     knitr,
     rmarkdown,
     ggplot2,
     testthat
+RoxygenNote: 7.1.2

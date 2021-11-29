@@ -19,10 +19,7 @@ to provide the Province map. The idea is to avoid providing
 a dataset with map that can be obtained as an aggregation of another.
 }
 \examples{
-\dontrun{
-get_provinces()
-
-# requires dplyr
-get_provinces(census_divisions \%>\% filter(prname == "Ontario"))
-}
+get_provinces(
+ census_divisions[census_divisions$prname == "Ontario",]
+)
 }

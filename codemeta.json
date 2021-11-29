@@ -1,11 +1,14 @@
 {
-  "@context": ["https://doi.org/10.5063/schema/codemeta-2.0", "http://schema.org"],
+  "@context": [
+    "https://doi.org/10.5063/schema/codemeta-2.0",
+    "http://schema.org"
+  ],
   "@type": "SoftwareSourceCode",
   "identifier": "canadamaps",
   "description": "Terrestrial maps with simplified topologies for Census Divisions,\n    Agricultural Regions, Economic Regions, Federal Electoral Divisions and\n    Provinces.",
   "name": "canadamaps: Maps of the Political and Administrative Divisions of Canada",
-  "codeRepository": "https://github.com/pachadotdev/canadamaps",
-  "issueTracker": "https://github.com/pachamaltese/canadamaps/issues",
+  "codeRepository": "https://github.com/pachadotdev/canadamaps/",
+  "issueTracker": "https://github.com/pachadotdev/canadamaps/issues",
   "license": "Apache License 2",
   "version": "0.1",
   "programmingLanguage": {
@@ -19,7 +22,7 @@
       "@type": "Person",
       "givenName": "Mauricio",
       "familyName": "Vargas Sepulveda",
-      "email": "mavargas11@uc.cl"
+      "email": "mv.sepulveda@mail.utoronto.ca"
     }
   ],
   "contributor": [
@@ -35,7 +38,7 @@
       "@type": "Person",
       "givenName": "Mauricio",
       "familyName": "Vargas Sepulveda",
-      "email": "mavargas11@uc.cl"
+      "email": "mv.sepulveda@mail.utoronto.ca"
     }
   ],
   "softwareSuggestions": [
@@ -145,18 +148,6 @@
     },
     {
       "@type": "SoftwareApplication",
-      "identifier": "stringr",
-      "name": "stringr",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=stringr"
-    },
-    {
-      "@type": "SoftwareApplication",
       "identifier": "rlang",
       "name": "rlang",
       "provider": {
@@ -170,7 +161,10 @@
   ],
   "relatedLink": "https://pachamaltese.github.io/canadamaps/",
   "readme": "https://github.com/pachadotdev/canadamaps/blob/main/README.md",
-  "fileSize": "2860.479KB",
+  "fileSize": "2860.058KB",
   "contIntegration": "https://github.com/pachadotdev/canadamaps/actions",
-  "keywords": ["maps", "canada"]
+  "keywords": [
+    "maps",
+    "canada"
+  ]
 }

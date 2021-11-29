@@ -25,36 +25,24 @@ ggplot(data = census_divisions) +
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
 
 ``` r
-ggplot(data = get_agricultural_divisions()) + 
-  geom_sf(aes(geometry = geometry)) +
-  labs(title = "Canada's Census Agricultural Regions")
+# same idea as the same plot, different aggregation
+#
+# ggplot(data = get_agricultural_divisions()) + 
+#   geom_sf(aes(geometry = geometry)) +
+#   labs(title = "Canada's Census Agricultural Regions")
+# 
+# ggplot(data = get_economic_regions()) + 
+#   geom_sf(aes(geometry = geometry)) +
+#   labs(title = "Canada's Economic Regions")
+# 
+# ggplot(data = federal_electoral_districts) + 
+#   geom_sf(aes(geometry = geometry)) +
+#   labs(title = "Canada's Federal Electoral Districts")
+# 
+# ggplot(data = get_provinces()) + 
+#   geom_sf(aes(geometry = geometry)) +
+#   labs(title = "Canada's Provinces")
 ```
-
-<img src="man/figures/README-unnamed-chunk-2-2.png" width="100%" />
-
-``` r
-ggplot(data = get_economic_regions()) + 
-  geom_sf(aes(geometry = geometry)) +
-  labs(title = "Canada's Economic Regions")
-```
-
-<img src="man/figures/README-unnamed-chunk-2-3.png" width="100%" />
-
-``` r
-ggplot(data = federal_electoral_districts) + 
-  geom_sf(aes(geometry = geometry)) +
-  labs(title = "Canada's Federal Electoral Districts")
-```
-
-<img src="man/figures/README-unnamed-chunk-2-4.png" width="100%" />
-
-``` r
-ggplot(data = get_provinces()) + 
-  geom_sf(aes(geometry = geometry)) +
-  labs(title = "Canada's Provinces")
-```
-
-<img src="man/figures/README-unnamed-chunk-2-5.png" width="100%" />
 
 ## Using real data
 
@@ -84,12 +72,16 @@ vaccination <- vaccination %>%
                   paste0(proptotal_atleast1dose, "%"), sep = "\n"),
   )
 
+# devtools::install_github("yutannihilation/ggsflabel")
+
 vaccination %>% 
   ggplot() +
   geom_sf(aes(fill = proptotal_atleast1dose, geometry = geometry)) +
-  geom_sf_label(aes(label = label, geometry = geometry)) +
+  # geom_sf_label(aes(label = label, geometry = geometry)) +
+  # improve label positioning with
+  ggsflabel::geom_sf_label_repel(aes(label = label, geometry = geometry)) +
   scale_fill_gradientn(colours = colours, name = "Cumulative percent") +
-  labs(title = "Cumulative percent of thepopulation who have received at least 1 dose of a COVID-19 vaccine") +
+  labs(title = "Cumulative percent of the population who have received at least 1 dose of a COVID-19 vaccine") +
   theme_minimal(base_size = 13)
 ```
 

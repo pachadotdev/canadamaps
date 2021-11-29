@@ -20,10 +20,7 @@ to provide the Economic Region (ER) map. The idea is to avoid providing
 a dataset with map that can be obtained as an aggregation of another.
 }
 \examples{
-\dontrun{
-get_economic_regions()
-
-# requires dplyr
-get_economic_regions(census_divisions \%>\% filter(prname == "Ontario"))
-}
+get_economic_regions(
+ census_divisions[census_divisions$prname == "Ontario",]
+)
 }
