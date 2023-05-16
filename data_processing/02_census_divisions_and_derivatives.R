@@ -13,6 +13,12 @@ if (!file.exists(census_divisions_rda)) {
   census_divisions <- census_divisions %>%
     mutate(cdname = gsub("--", " - ", cdname))
 
+  # see https://stackoverflow.com/a/76265290/3720258
+  census_divisions <- census_divisions %>%
+    st_as_sf() %>%
+    st_transform(4326) %>%
+    as_tibble()
+
   use_data(census_divisions, compress = "xz", overwrite = T)
 } else {
   load(census_divisions_rda)

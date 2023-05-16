@@ -13,6 +13,11 @@ if (!file.exists(federal_electoral_districts_rda)) {
   federal_electoral_districts <- federal_electoral_districts %>%
     select(-c(fedename, fedfname))
 
+  federal_electoral_districts <- federal_electoral_districts %>%
+    st_as_sf() %>%
+    st_transform(4326) %>%
+    as_tibble()
+
   use_data(federal_electoral_districts, compress = "xz", overwrite = T)
 } else {
   load(federal_electoral_districts_rda)
