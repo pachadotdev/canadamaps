@@ -16,7 +16,7 @@ if (!file.exists(census_divisions_rda)) {
   # see https://stackoverflow.com/a/76265290/3720258
   census_divisions <- census_divisions %>%
     st_as_sf() %>%
-    st_transform(4326) %>%
+    st_transform("NAD83") %>%
     as_tibble()
 
   use_data(census_divisions, compress = "xz", overwrite = T)

@@ -4,4 +4,9 @@ matches_for_aggregation <- list(
   halton_special_case = halton_special_case
 )
 
+matches_for_aggregation$halton_special_case <- matches_for_aggregation$halton_special_case %>%
+  st_as_sf() %>%
+  st_transform("NAD83") %>%
+  as_tibble()
+
 use_data(matches_for_aggregation, compress = "xz", internal = T, overwrite = T)
