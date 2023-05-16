@@ -2,6 +2,8 @@
 ^\.Rproj\.user$
 .Renviron
 data_shp
+data_geojson
+data_topojson
 data_xlsx
 data_processing
 dev
