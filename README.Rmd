@@ -6,6 +6,7 @@ output: github_document
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/pachadotdev/canadamaps/workflows/R-CMD-check/badge.svg)](https://github.com/pachadotdev/canadamaps/actions)
+[![R-CMD-check](https://github.com/pachadotdev/canadamaps/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/pachadotdev/canadamaps/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
   
 ```{r, include = FALSE}
