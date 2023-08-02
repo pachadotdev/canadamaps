@@ -4,6 +4,7 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/pachadotdev/canadamaps/workflows/R-CMD-check/badge.svg)](https://github.com/pachadotdev/canadamaps/actions)
+[![R-CMD-check](https://github.com/pachadotdev/canadamaps/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/pachadotdev/canadamaps/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 # canadamaps
@@ -87,8 +88,7 @@ An initial plot can be done with the following code.
 # colours obtained with Chromium's inspector
 colours <- c("#efefa2", "#c2e699", "#78c679", "#31a354", "#006837")
 
-vaccination %>% 
-  ggplot() +
+ggplot(vaccination) +
   geom_sf(aes(fill = proptotal_atleast1dose, geometry = geometry)) +
   geom_sf_label(aes(label = label, geometry = geometry)) +
   scale_fill_gradientn(colours = colours, name = "Cumulative percent") +
@@ -106,8 +106,7 @@ Canada](https://www150.statcan.gc.ca/n1/pub/92-195-x/2011001/other-autre/mapproj
 vaccination$geometry <- st_transform(vaccination$geometry,
   crs = "+proj=lcc +lat_1=49 +lat_2=77 +lon_0=-91.52 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs")
 
-vaccination %>% 
-  ggplot() +
+ggplot(vaccination) +
   geom_sf(aes(fill = proptotal_atleast1dose, geometry = geometry)) +
   geom_sf_label(aes(label = label, geometry = geometry)) +
   scale_fill_gradientn(colours = colours, name = "Cumulative percent") +
@@ -120,8 +119,7 @@ vaccination %>%
 Finally, we can use a different ggplot theme.
 
 ``` r
-vaccination %>% 
-  ggplot() +
+ggplot(vaccination) +
   geom_sf(aes(fill = proptotal_atleast1dose, geometry = geometry)) +
   geom_sf_label(aes(label = label, geometry = geometry)) +
   scale_fill_gradientn(colours = colours, name = "Cumulative percent") +
