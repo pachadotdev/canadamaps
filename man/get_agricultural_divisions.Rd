@@ -22,6 +22,6 @@ another.
 }
 \examples{
 get_agricultural_divisions(
- census_divisions[census_divisions$prname == "Ontario",]
+  census_divisions[census_divisions$prname == "Ontario", ]
 )
 }

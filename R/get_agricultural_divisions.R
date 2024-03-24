@@ -5,16 +5,15 @@
 #' another.
 #' @param map which map to add, by default it takes the complete Census
 #' Divisions (CD) map
-#' @importFrom rmapshaper ms_dissolve
-#' @importFrom sf st_as_sf
-#' @importFrom dplyr as_tibble select left_join distinct mutate case_when
+#' @importFrom sf st_make_valid st_union
+#' @importFrom dplyr as_tibble select left_join distinct mutate case_when group_by summarise
 #'  case_when
 #' @importFrom rlang sym syms
 #' @return a tibble with economic regions, provinces and geometry
 #' (multipolygon) fields.
 #' @examples
 #' get_agricultural_divisions(
-#'  census_divisions[census_divisions$prname == "Ontario",]
+#'   census_divisions[census_divisions$prname == "Ontario", ]
 #' )
 #' @export
 get_agricultural_divisions <- function(map = census_divisions) {
@@ -22,7 +21,9 @@ get_agricultural_divisions <- function(map = census_divisions) {
     mutate(cdname2 = gsub("\\s+", " ", !!sym("cdname"))) %>%
     left_join(
       matches_for_aggregation$agricultural_divisions %>%
-        select(!!!syms(c("cdname", "caruid", "carname"))), by = c("cdname2" = "cdname")) %>%
+        select(!!!syms(c("cdname", "caruid", "carname"))),
+      by = c("cdname2" = "cdname")
+    ) %>%
     select(-!!sym("cdname2"))
 
   # this comes from email communication (see the XLSX in data_xlsx/)
@@ -63,7 +64,10 @@ get_agricultural_divisions <- function(map = census_divisions) {
     select(!!!syms(c("caruid", "carname", "pruid", "prname"))) %>%
     distinct()
 
-  map <- ms_dissolve(st_as_sf(map), field = "caruid") %>%
+  map <- map %>%
+    mutate(geometry = st_make_valid(!!sym("geometry"))) %>%
+    group_by(!!sym("caruid")) %>%
+    summarise(geometry = st_union(!!sym("geometry")), do_union = TRUE) %>%
     as_tibble() %>%
     left_join(prnames, by = "caruid") %>%
     select(!!!syms(c("caruid", "carname", "pruid", "prname", "geometry")))

@@ -1,3 +1,8 @@
+# canadamaps 0.3.0
+
+* I could not find a way to make it work with the most recent rmapshaper, so
+  I re-wrote the functions to use sf only.
+  
 # canadamaps 0.2.1
 
 * requires rmapshaper version 0.4.6 to avoid problems with version 0.5.0

@@ -20,6 +20,6 @@ a dataset with map that can be obtained as an aggregation of another.
 }
 \examples{
 get_provinces(
- census_divisions[census_divisions$prname == "Ontario",]
+  census_divisions[census_divisions$prname == "Ontario", ]
 )
 }

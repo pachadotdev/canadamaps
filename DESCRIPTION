@@ -1,7 +1,7 @@
 Package: canadamaps
 Type: Package
 Title: Maps of the Political and Administrative Divisions of Canada
-Version: 0.2.1
+Version: 0.3.0
 Authors@R: c(
     person("Mauricio", "Vargas Sepulveda", role = c("aut", "cre"),
       email = "mv.sepulveda@mail.utoronto.ca"),
@@ -19,7 +19,6 @@ LazyData: true
 LazyDataCompression: xz
 Depends: R(>= 3.5.0), sf
 Imports: 
-    rmapshaper (== 0.4.6),
     dplyr,
     magrittr,
     rlang
@@ -28,4 +27,4 @@ Suggests:
     rmarkdown,
     ggplot2,
     testthat
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1

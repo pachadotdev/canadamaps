@@ -4,15 +4,14 @@
 #' a dataset with map that can be obtained as an aggregation of another.
 #' @param map which map to add, by default it takes the complete Census
 #' Divisions (CD) map
-#' @importFrom rmapshaper ms_dissolve
-#' @importFrom sf st_as_sf
-#' @importFrom dplyr as_tibble filter select left_join bind_rows distinct
+#' @importFrom sf st_make_valid st_union
+#' @importFrom dplyr as_tibble filter select left_join bind_rows distinct group_by summarise
 #' @importFrom rlang sym syms
 #' @return a tibble with economic regions, provinces and geometry
 #' (multipolygon) fields.
 #' @examples
 #' get_economic_regions(
-#'  census_divisions[census_divisions$prname == "Ontario",]
+#'   census_divisions[census_divisions$prname == "Ontario", ]
 #' )
 #' @export
 get_economic_regions <- function(map = census_divisions) {
@@ -31,7 +30,10 @@ get_economic_regions <- function(map = census_divisions) {
     select(!!!syms(c("eruid", "ername", "pruid", "prname"))) %>%
     distinct()
 
-  map <- ms_dissolve(st_as_sf(map), field = "eruid") %>%
+  map <- map %>%
+    mutate(geometry = st_make_valid(!!sym("geometry"))) %>%
+    group_by(!!sym("eruid")) %>%
+    summarise(geometry = st_union(!!sym("geometry")), do_union = TRUE) %>%
     as_tibble() %>%
     left_join(eruid_pruid, by = "eruid") %>%
     select(!!!syms(c("eruid", "ername", "pruid", "prname", "geometry")))

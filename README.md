@@ -3,7 +3,6 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/pachadotdev/canadamaps/workflows/R-CMD-check/badge.svg)](https://github.com/pachadotdev/canadamaps/actions)
 [![R-CMD-check](https://github.com/pachadotdev/canadamaps/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/pachadotdev/canadamaps/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
@@ -19,66 +18,87 @@ all possible cases.
 library(ggplot2)
 library(canadamaps)
 
-ggplot(data = census_divisions) + 
+ggplot(data = census_divisions) +
   geom_sf(aes(geometry = geometry)) +
   labs(title = "Canada's Census Divisions")
 ```
 
 <img src="man/figures/README-general-1.png" width="100%" />
 
-``` r
+The same idea can be applied to other maps with different levels of
+aggregation.
 
-# same idea as the same plot, different aggregation
-#
-# ggplot(data = get_agricultural_divisions()) + 
-#   geom_sf(aes(geometry = geometry)) +
-#   labs(title = "Canada's Census Agricultural Regions")
-# 
-# ggplot(data = get_economic_regions()) + 
-#   geom_sf(aes(geometry = geometry)) +
-#   labs(title = "Canada's Economic Regions")
-# 
-# ggplot(data = federal_electoral_districts) + 
-#   geom_sf(aes(geometry = geometry)) +
-#   labs(title = "Canada's Federal Electoral Districts")
-# 
-# ggplot(data = get_provinces()) + 
-#   geom_sf(aes(geometry = geometry)) +
-#   labs(title = "Canada's Provinces")
+``` r
+ggplot(data = get_agricultural_divisions()) +
+  geom_sf(aes(geometry = geometry)) +
+  labs(title = "Canada's Census Agricultural Regions")
+
+ggplot(data = get_economic_regions()) +
+  geom_sf(aes(geometry = geometry)) +
+  labs(title = "Canada's Economic Regions")
+
+ggplot(data = federal_electoral_districts) +
+  geom_sf(aes(geometry = geometry)) +
+  labs(title = "Canada's Federal Electoral Districts")
+
+ggplot(data = get_provinces()) +
+  geom_sf(aes(geometry = geometry)) +
+  labs(title = "Canada's Provinces")
 ```
+
+## Lambert projection
+
+We can change the CRS with the sf package but please read the
+explanation from [Stats
+Canada](https://www150.statcan.gc.ca/n1/pub/92-195-x/2011001/other-autre/mapproj-projcarte/m-c-eng.htm).
+
+``` r
+# shortcut function to change the CRS
+census_divisions <- lambert_projection(census_divisions)
+
+ggplot(data = census_divisions) +
+  geom_sf(aes(geometry = geometry)) +
+  labs(title = "Canada's Census Divisions")
+```
+
+<img src="man/figures/README-lambert-1.png" width="100%" />
 
 ## Using real data
 
-We start by loading the required packages.
-
-``` r
-library(readr)
-library(dplyr)
-library(sf)
-```
-
 Let’s say I want to replicate the map from [Health
 Canada](https://health-infobase.canada.ca/covid-19/vaccination-coverage/),
-which was checked on 2023-08-02 and was updated up to 2023-06-18. To do
+which was checked on 2023-08-02 and was updated up to 2024-02-25. To do
 this, I need to download the [CSV
 file](https://health-infobase.canada.ca/src/data/covidLive/vaccination-coverage-map.csv)
 from Health Canada and then combine it with the provinces map from
 canadamaps.
 
 ``` r
+library(readr)
+library(dplyr)
+library(sf)
+
 url <- "https://health-infobase.canada.ca/src/data/covidLive/vaccination-coverage-map.csv"
 csv <- paste0("data_processing/", gsub(".*/", "", url))
 if (!file.exists(csv)) download.file(url, csv)
 
-vaccination <- read_csv(csv) %>% 
-  filter(week_end == as.Date("2023-06-18"), pruid != 1) %>% 
-  select(pruid, proptotal_atleast1dose)
+vaccination <- read_csv(csv, col_types = cols(prop5plus_atleast1dose = col_character())) %>%
+  filter(week_end == as.Date("2024-02-25"), pruid != 1) %>%
+  select(pruid, proptotal_atleast1dose) %>%
+  mutate(
+    proptotal_atleast1dose = as.numeric(case_when(
+      proptotal_atleast1dose == ">=99" ~ 99,
+      TRUE ~ proptotal_atleast1dose
+    ))
+  )
 
-vaccination <- vaccination %>% 
-  left_join(get_provinces(), by = "pruid") %>% # canadamaps in action
+vaccination <- vaccination %>%
+  inner_join(get_provinces(), by = "pruid") %>% # canadamaps in action
   mutate(
     label = paste(gsub(" /.*", "", prname),
-                  paste0(proptotal_atleast1dose, "%"), sep = "\n"),
+      paste0(proptotal_atleast1dose, "%"),
+      sep = "\n"
+    ),
   )
 ```
 
@@ -96,27 +116,9 @@ ggplot(vaccination) +
   theme_minimal(base_size = 13)
 ```
 
-<img src="man/figures/README-plot-1.png" width="100%" />
+<img src="man/figures/README-covid_map_2-1.png" width="100%" />
 
-What if we want a Lambert (conic) projection? We can change the CRS with
-the sf package but please read the explanation from [Stats
-Canada](https://www150.statcan.gc.ca/n1/pub/92-195-x/2011001/other-autre/mapproj-projcarte/m-c-eng.htm).
-
-``` r
-vaccination$geometry <- st_transform(vaccination$geometry,
-  crs = "+proj=lcc +lat_1=49 +lat_2=77 +lon_0=-91.52 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs")
-
-ggplot(vaccination) +
-  geom_sf(aes(fill = proptotal_atleast1dose, geometry = geometry)) +
-  geom_sf_label(aes(label = label, geometry = geometry)) +
-  scale_fill_gradientn(colours = colours, name = "Cumulative percent") +
-  labs(title = "Cumulative percent of the population who have received at least 1 dose of a COVID-19 vaccine") +
-  theme_minimal(base_size = 13)
-```
-
-<img src="man/figures/README-lambert-1.png" width="100%" />
-
-Finally, we can use a different ggplot theme.
+We can use different ggplot themes.
 
 ``` r
 ggplot(vaccination) +
@@ -131,7 +133,44 @@ ggplot(vaccination) +
   )
 ```
 
-<img src="man/figures/README-lambert2-1.png" width="100%" />
+<img src="man/figures/README-covid_map_3-1.png" width="100%" />
+
+If we want to fill the information for Alberta, which is not seen in the
+original map, we can fill and then filter.
+
+``` r
+library(tidyr)
+
+vaccination <- read_csv(csv, col_types = cols(prop5plus_atleast1dose = col_character())) %>%
+  arrange(pruid, week_end) %>%
+  group_by(pruid) %>%
+  fill(proptotal_atleast1dose, .direction = "down") %>% # Alberta is filled with an older value
+  filter(week_end == as.Date("2024-02-25"), pruid != 1) %>%
+  select(pruid, proptotal_atleast1dose) %>%
+  mutate(
+    proptotal_atleast1dose = as.numeric(case_when(
+      proptotal_atleast1dose == ">=99" ~ 99,
+      TRUE ~ proptotal_atleast1dose
+    ))
+  ) %>%
+  inner_join(get_provinces(), by = "pruid") %>% # canadamaps in action
+  mutate(
+    label = paste(gsub(" /.*", "", prname),
+      paste0(proptotal_atleast1dose, "%"),
+      sep = "\n"
+    ),
+  ) %>%
+  lambert_projection()
+
+ggplot(vaccination) +
+  geom_sf(aes(fill = proptotal_atleast1dose, geometry = geometry)) +
+  geom_sf_label(aes(label = label, geometry = geometry)) +
+  scale_fill_gradientn(colours = colours, name = "Cumulative percent") +
+  labs(title = "Cumulative percent of the population who have received at least 1 dose of a COVID-19 vaccine") +
+  theme_minimal(base_size = 13)
+```
+
+<img src="man/figures/README-covid_map_4-1.png" width="100%" />
 
 ## Units of aggregation
 
